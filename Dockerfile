@@ -44,7 +44,7 @@ RUN chmod +x /etc/service/nginx/run
 ######################################
 RUN apt-get install -y wget
 
-ARG CRYPTOPRO_DEB_SOURCE=https://www.cryptopro.ru/sites/default/files/private/csp/50/11455/linux-amd64_deb.tgz
+ARG CRYPTOPRO_DEB_SOURCE=http://www.cryptopro.ru/sites/default/files/private/csp/50/11455/linux-amd64_deb.tgz
 ARG CRYPTOPRO_LOGIN=test@msoinvest.com
 ARG CRYPTOPRO_PASSWORD=qWerty!124
 RUN mkdir /tmp/cryptopro && \
@@ -61,7 +61,7 @@ RUN mkdir /tmp/cryptopro && \
 ######################################
 RUN apt-get install -y libboost-dev php7.3-dev libxml2-dev unzip
 
-ARG CADES_DEB_SOURCE=https://www.cryptopro.ru/sites/default/files/products/cades/current_release_2_0/cades_linux_amd64.tar.gz
+ARG CADES_DEB_SOURCE=http://www.cryptopro.ru/sites/default/files/products/cades/current_release_2_0/cades_linux_amd64.tar.gz
 RUN PHP_VERSION_BUILD=`php -i | grep 'PHP Version => ' -m 1 | awk '{split($4,a," "); print a[1]}' | awk '{split($1,a,"-"); print a[1]}'` && \
     PHP_VERSION=`echo ${PHP_VERSION_BUILD} | awk '{split($1,a,"."); str = sprintf("%s.%s", a[1], a[2]); print str}'` && \
     PHP_EXT_DIR=`php -i | grep 'extension_dir => ' | awk '{print $3}'` && \
@@ -79,7 +79,7 @@ RUN PHP_VERSION_BUILD=`php -i | grep 'PHP Version => ' -m 1 | awk '{split($4,a,"
     # download and configure php sources
     mkdir /tmp/php && \
     cd /tmp/php && \
-    wget https://www.php.net/distributions/php-${PHP_VERSION_BUILD}.tar.gz && \
+    wget http://www.php.net/distributions/php-${PHP_VERSION_BUILD}.tar.gz && \
     tar -xf php-${PHP_VERSION_BUILD}.tar.gz && \
     cd php-${PHP_VERSION_BUILD} && \
     ./configure --prefix=/opt/php && \
