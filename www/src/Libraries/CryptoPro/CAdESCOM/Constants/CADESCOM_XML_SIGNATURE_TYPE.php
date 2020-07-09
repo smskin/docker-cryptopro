@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Libraries\CryptoPro\CAdESCOM\Constants;
+
+class CADESCOM_XML_SIGNATURE_TYPE
+{
+    const CADESCOM_XML_SIGNATURE_TYPE_ENVELOPED = 0;
+    const CADESCOM_XML_SIGNATURE_TYPE_ENVELOPING = 1;
+    const CADESCOM_XML_SIGNATURE_TYPE_TEMPLATE = 2;
+}

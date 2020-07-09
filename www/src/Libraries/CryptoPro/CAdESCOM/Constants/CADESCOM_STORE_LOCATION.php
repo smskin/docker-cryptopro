@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Libraries\CryptoPro\CAdESCOM\Constants;
+
+class CADESCOM_STORE_LOCATION
+{
+    const CADESCOM_ACTIVE_DIRECTORY_USER_STORE = 3;
+    const CADESCOM_CONTAINER_STORE = 100;
+    const CADESCOM_CURRENT_USER_STORE = 2;
+    const CADESCOM_LOCAL_MACHINE_STORE = 1;
+    const CADESCOM_MEMORY_STORE = 0;
+    const CADESCOM_SMART_CARD_USER_STORE = 4;
+}

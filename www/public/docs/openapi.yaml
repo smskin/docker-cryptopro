@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  title: 'CryptoPro API'
+  contact:
+    email: serg@msoinvest.com
+  version: '0.1'
+paths:
+  /crypto-pro/certificates:
+    get:
+      summary: 'Get list of certificates'
+      operationId: 'App\Application\Actions\CryptoPro\ListCertificatesAction::action'
+      responses:
+        '200':
+          description: 'successful operation'
+  /crypto-pro/sign:
+    post:
+      summary: 'Sign file'
+      operationId: 'App\Application\Actions\CryptoPro\SignAction::action'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - findType
+                - query
+                - file
+              properties:
+                findType:
+                  description: 'Cert find type. In: thumbprint, subject'
+                  type: string
+                  example: thumbprint
+                query:
+                  description: 'Cert find query'
+                  type: string
+                  example: 2537152F88CD3964C6B64FEFE62735A0F4E2E6CD
+                pin:
+                  description: 'Private key pin code'
+                  type: string
+                file:
+                  description: 'file to sign'
+                  type: file
+                  format: file
+                noCert:
+                  description: 'No cert flag. In: 0,1'
+                  type: string
+                noChain:
+                  description: 'No chain flag. In: 0,1'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignedFile'
+  /crypto-pro/verify-sign:
+    post:
+      summary: 'Verify signature'
+      operationId: 'App\Application\Actions\CryptoPro\VerifySignAction::action'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+                - signature
+              properties:
+                file:
+                  description: 'Source file'
+                  type: file
+                  format: file
+                signature:
+                  description: 'Signature file'
+                  type: file
+                  format: file
+              type: object
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+components:
+  schemas:
+    Certificate:
+      title: Certificate
+      description: 'Certificate model'
+      properties:
+        hasPrivateKey:
+          type: boolean
+        serialNumber:
+          type: string
+        thumbprint:
+          type: string
+        subject:
+          $ref: '#/components/schemas/Subject'
+        issuer:
+          $ref: '#/components/schemas/Subject'
+        validFrom:
+          type: string
+        validTo:
+          type: string
+        algo:
+          type: string
+        algoName:
+          type: string
+        privateKey:
+          $ref: '#/components/schemas/PrivateKey'
+      type: object
+    PrivateKey:
+      title: PrivateKey
+      description: 'Private key model'
+      properties:
+        containerName:
+          type: string
+        uniqueContainerName:
+          type: string
+        providerName:
+          type: string
+      type: object
+    SignedFile:
+      title: SignedFile
+      description: 'Signed file model'
+      properties:
+        signedContent:
+          type: string
+        cert:
+          $ref: '#/components/schemas/Certificate'
+      type: object
+    Subject:
+      title: Subject
+      description: 'Subject model'
+      properties:
+        raw:
+          type: string
+        G:
+          type: string
+        SN:
+          type: string
+        T:
+          type: string
+        OU:
+          type: string
+        CN:
+          type: string
+        O:
+          type: string
+        L:
+          type: string
+        C:
+          type: string
+        E:
+          type: string
+        emailAddress:
+          type: string
+      type: object
+    VerifyResponse:
+      title: VerifyResponse
+      description: 'Verify response model'
+      properties:
+        result:
+          type: boolean
+      type: object

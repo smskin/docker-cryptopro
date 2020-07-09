@@ -1,0 +1,46 @@
+server {
+	listen 80 default_server;
+	root /var/www/html/public;
+
+	index index.php index.html;
+
+	server_name _;
+
+	location / {
+		 try_files $uri $uri/ /index.php$is_args$args;
+	}
+
+	location ~ \.php$ {
+	    try_files $uri /index.php =404;
+	    fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+	    fastcgi_index index.php;
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_read_timeout 600;
+        include fastcgi_params;
+	}
+
+	location = /favicon.ico {
+        access_log off;
+        log_not_found off;
+    }
+
+    location ~ /\.ht {
+        deny all;
+        return 404;
+    }
+
+    location ~ /.git/ {
+        deny all;
+        return 404;
+    }
+
+    location ~ \.php$ {
+        deny all;
+        return 404;
+    }
+
+	error_log /dev/stderr;
+    access_log /dev/stdout;
+}

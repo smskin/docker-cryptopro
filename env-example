@@ -1,0 +1,13 @@
+###########################################################
+############## Current project setup ######################
+###########################################################
+COMPOSE_PROJECT_NAME=cryptopro
+
+###########################################################
+################ Containers Customization #################
+###########################################################
+### App ###################################################
+CRYPTOPRO_DEB_SOURCE=https://www.cryptopro.ru/sites/default/files/private/csp/50/11455/linux-amd64_deb.tgz
+CADES_DEB_SOURCE=https://www.cryptopro.ru/sites/default/files/products/cades/current_release_2_0/cades_linux_amd64.tar.gz
+CRYPTOPRO_LOGIN=test@msoinvest.com
+CRYPTOPRO_PASSWORD=qWerty!124
