@@ -15,5 +15,5 @@ services:
       - 80
     ports:
       - ${APP_HOST_IP}:${APP_HOST_PORT}:80
-    volumes:
-      - ./www:/var/www/html
+#    volumes:
+#      - ./www:/var/www/html

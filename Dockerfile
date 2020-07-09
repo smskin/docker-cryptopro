@@ -151,12 +151,17 @@ RUN cd /root/certificate && \
 RUN cd / && \
     rm -rf /root/certificate
 
-
 #####################################
 # Web interface:
 #####################################
 RUN rm -rf /var/www/html/*
 COPY ./www /var/www/html
+
+#####################################
+#  Install composer dependencies:
+#####################################
+RUN cd /var/www/html && \
+    composer install --no-dev
 
 EXPOSE 80
 WORKDIR /var/www/html
