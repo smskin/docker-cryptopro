@@ -2,7 +2,7 @@
 # sure you lock down to a specific version, not to `latest`!
 # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
 # a list of version numbers.
-FROM phusion/baseimage
+FROM phusion/baseimage:bionic-1.0.0
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
@@ -44,14 +44,9 @@ RUN chmod +x /etc/service/nginx/run
 ######################################
 RUN apt-get install -y wget
 
-ARG CRYPTOPRO_DEB_SOURCE=https://www.cryptopro.ru/sites/default/files/private/csp/50/11455/linux-amd64_deb.tgz
-ARG CRYPTOPRO_LOGIN=test@msoinvest.com
-ARG CRYPTOPRO_PASSWORD=qWerty!124
-RUN mkdir /tmp/cryptopro && \
-    cd /tmp/cryptopro && \
-    curl -s -L --cookie cookies --cookie-jar cookies --data "name=$CRYPTOPRO_LOGIN&pass=$CRYPTOPRO_PASSWORD&op=Вход&form_build_id=form-0f5b37c6b5257bb15f7df1197110b064&form_id=user_login_block"  http://www.cryptopro.ru/main?destination=node%2F258 > /dev/null &&  \
-    wget --load-cookies=cookies ${CRYPTOPRO_DEB_SOURCE} && \
-    tar -xvzf linux-amd64_deb.tgz && \
+COPY ./dist/csp.tgz /tmp/cryptopro/
+RUN cd /tmp/cryptopro && \
+    tar -xvzf csp.tgz && \
     ./linux-amd64_deb/install.sh && \
     cd / && \
     rm -rf /tmp/cryptopro
@@ -61,21 +56,18 @@ RUN mkdir /tmp/cryptopro && \
 ######################################
 RUN apt-get install -y libboost-dev php7.3-dev libxml2-dev unzip
 
-ARG CADES_DEB_SOURCE=https://www.cryptopro.ru/sites/default/files/products/cades/current_release_2_0/cades_linux_amd64.tar.gz
+COPY ./dist/cades.tar.gz /tmp/cades/
+COPY ./dist/php7_support.patch.zip /tmp/cades/
+
 RUN PHP_VERSION_BUILD=`php -i | grep 'PHP Version => ' -m 1 | awk '{split($4,a," "); print a[1]}' | awk '{split($1,a,"-"); print a[1]}'` && \
     PHP_VERSION=`echo ${PHP_VERSION_BUILD} | awk '{split($1,a,"."); str = sprintf("%s.%s", a[1], a[2]); print str}'` && \
     PHP_EXT_DIR=`php -i | grep 'extension_dir => ' | awk '{print $3}'` && \
     # install cades plugin
-    mkdir /tmp/cades && \
     cd /tmp/cades && \
-    curl -s -L --cookie cookies --cookie-jar cookies --data "name=$CRYPTOPRO_LOGIN&pass=$CRYPTOPRO_PASSWORD&op=Вход&form_build_id=form-0f5b37c6b5257bb15f7df1197110b064&form_id=user_login_block"  http://www.cryptopro.ru/main?destination=node%2F258 > /dev/null &&  \
-    wget --load-cookies=cookies ${CADES_DEB_SOURCE} && \
-    tar -xvzf cades_linux_amd64.tar.gz && \
-    dpkg -i ./cades_linux_amd64/cprocsp-pki-cades_2.0.0-1_amd64.deb && \
-    dpkg -i ./cades_linux_amd64/lsb-cprocsp-devel_5.0.11535-4_all.deb && \
-    dpkg -i ./cades_linux_amd64/cprocsp-pki-phpcades_2.0.0-1_amd64.deb && \
-    curl -s -L --cookie cookies --cookie-jar cookies --data "name=$CRYPTOPRO_LOGIN&pass=$CRYPTOPRO_PASSWORD&op=Вход&form_build_id=form-0f5b37c6b5257bb15f7df1197110b064&form_id=user_login_block"  http://www.cryptopro.ru/main?destination=node%2F258 > /dev/null &&  \
-    wget --load-cookies=cookies https://www.cryptopro.ru/sites/default/files/products/cades/php7_support.patch.zip && \
+    tar -xvzf cades.tar.gz && \
+    dpkg -i ./cades_linux_amd64/cprocsp-pki-cades-64_2.0.14071-1_amd64.deb && \
+    dpkg -i ./cades_linux_amd64/lsb-cprocsp-devel_5.0.11863-5_all.deb && \
+    dpkg -i ./cades_linux_amd64/cprocsp-pki-phpcades-64_2.0.14071-1_amd64.deb && \
     # download and configure php sources
     mkdir /tmp/php && \
     cd /tmp/php && \
