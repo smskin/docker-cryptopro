@@ -2,6 +2,7 @@
 
 ## Installation
 * copy env-example to .env
+* change LICENSE for set license or use trial (90 days)
 * add private and public keys to ./certificates folder
 * change PUBLIC_KEY_FILE_NAME & PRIVATE_KEY_FOLDER_NAME for install keys to cryptopro
 * change CRYPTOPRO_LOGIN & CRYPTOPRO_PASSWORD variables (if cryptopro blocked credentials from example)
