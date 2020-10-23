@@ -7,6 +7,7 @@ services:
       args:
         - PUBLIC_KEY_FILE_NAME=${PUBLIC_KEY_FILE_NAME}
         - PRIVATE_KEY_FOLDER_NAME=${PRIVATE_KEY_FOLDER_NAME}
+        - LICENSE=${LICENSE}
     expose:
       - 80
     ports:

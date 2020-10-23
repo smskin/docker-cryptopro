@@ -6,6 +6,7 @@ APP_HOST_IP=127.0.0.1
 APP_HOST_PORT=88
 PUBLIC_KEY_FILE_NAME=test-certificate.cer
 PRIVATE_KEY_FOLDER_NAME=test-sig.000
+LICENSE=
 
 ###########################################################
 ################ Containers Customization #################

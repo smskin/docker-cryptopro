@@ -144,6 +144,17 @@ RUN cd / && \
     rm -rf /root/certificate
 
 #####################################
+#  Install license:
+# http://pushorigin.ru/cryptopro/cryptcp
+#####################################
+
+ARG LICENSE
+RUN if [ "$LICENSE" ]; then \
+	echo $LICENSE; \
+    /opt/cprocsp/sbin/amd64/cpconfig -license -set ${LICENSE}; \
+    fi
+
+#####################################
 # Web interface:
 #####################################
 RUN rm -rf /var/www/html/*
